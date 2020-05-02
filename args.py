@@ -10,11 +10,14 @@ file_path = os.path.dirname(__file__)
 model_dir = os.path.join(file_path, 'albert_lcqmc_checkpoints/')
 
 #config文件
-config_name = os.path.join(file_path, 'albert_config/albert_config_tiny.json')
+# config_name = os.path.join(file_path, 'albert_config/albert_config_tiny.json')
+config_name = os.path.join(file_path, '../albert_tiny_489k/albert_config_tiny.json')
 #ckpt文件名称
-ckpt_name = os.path.join(model_dir, 'model.ckpt')
+# ckpt_name = os.path.join(model_dir, 'model.ckpt')
+ckpt_name = os.path.join(file_path, '../albert_tiny_489k/albert_model.ckpt')
 #输出文件目录
-output_dir = os.path.join(file_path, 'albert_lcqmc_checkpoints/')
+# output_dir = os.path.join(file_path, 'albert_lcqmc_checkpoints/')
+output_dir = os.path.join(file_path, 'tmp')
 #vocab文件目录
 vocab_file = os.path.join(file_path, 'albert_config/vocab.txt')
 #数据目录
@@ -34,4 +37,5 @@ layer_indexes = [-2]
 max_seq_len = 128
 
 # graph名字
-graph_file = os.path.join(file_path, 'albert_lcqmc_checkpoints/graph')
+# graph_file = os.path.join(file_path, 'albert_lcqmc_checkpoints/graph')
+graph_file = os.path.join(file_path, 'tmp/graph')
