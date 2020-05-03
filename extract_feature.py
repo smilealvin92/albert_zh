@@ -228,11 +228,13 @@ def get_word_embedding(sentence, sentence_embedding):
     word_list = jieba.lcut(sentence)
     print(word_list)
     char_index = 0
+    # 去掉开头的[CLS]
+    sentence_embedding = np.squeeze(sentence_embedding[:, 1:, :])
     for word in word_list:
         word_length = len(word)
-        word_embedding = np.zeros(sentence_embedding.shape[2])
+        word_embedding = np.zeros(sentence_embedding.shape[1])
         for embedding_index in range(char_index, char_index+word_length):
-            word_embedding += np.squeeze(sentence_embedding[:, embedding_index, :])
+            word_embedding += np.squeeze(sentence_embedding[embedding_index, :])
         word_embedding /= word_length
         word_embedding_list[word] = word_embedding
         char_index += word_length
@@ -242,15 +244,17 @@ def get_word_embedding(sentence, sentence_embedding):
 def main():
     bert = BertVector()
     # question = input('question: ')
-    # sentence_list = ["小米手机用起来速度还可以哦！", "我的苹果手机现在是越来越卡了。"]
-    sentence_list = ["我非常喜欢用小米手机！", "这个季节产的玉米不好吃。"]
+    sentence_list = ["小米手机用起来速度还可以哦！", "我的苹果手机现在是越来越卡了。"]
+    # sentence_list = ["我非常喜欢用小米手机！", "这个季节产的玉米不好吃。"]
     # sentence_list = ["玉米很容易煮的！", "这个季节产的小米不好吃。"]
-    # sentence_list = ["华为是一个大的手机品牌。", "小米手机用起来速度还可以哦！"]
+    # sentence_list = ["玉米是一个大的手机品牌。", "小米手机用起来速度还可以哦！"]
+    # sentence_list = ["小米含有大量的维生素E，是大米的4.8倍；其蛋白质优于大米、小麦。除了健胃消食，常吃小米，对女性的益处大，有滋阴养颜的作用。", "据凤凰科技报道，《福布斯》刊文称，研究人员在对小米手机加载的一款浏览器进行研究时发现，浏览器会收集并分享用户隐私信息。据悉，浏览器跟踪用户几乎全部上网行为，其中包括曾经访问的网站、在谷歌网站上输入的搜索关键字、手机信息流中的所有内容。即使在“无痕”模式下，浏览器也会跟踪用户隐私信息。报道称，小米手机收集的所有信息，会发送到它在俄罗斯、新加坡设立的服务器中。"]
     sentences_embedding = [bert.encode([x]) for x in sentence_list]
+    sentence_list = [x[:bert.max_seq_length-2] if len(x) > bert.max_seq_length-2 else x for x in sentence_list]
     # sentence_embedding_dict = dict(zip(sentence_list, sentences_embedding))
     # for sentence, sentence_embedding in sentence_embedding_dict:
     v_1 = get_word_embedding(sentence_list[0], sentences_embedding[0])["小米"]
-    v_2 = get_word_embedding(sentence_list[1], sentences_embedding[1])["玉米"]
+    v_2 = get_word_embedding(sentence_list[1], sentences_embedding[1])["苹果"]
     print("cosine distance: ", np.dot(v_1, v_2)/(np.linalg.norm(v_1)*(np.linalg.norm(v_2))))
     # v = bert.encode(["小米用起来还可以哦！", "我的苹果手机现在是越来越卡了。"])
     # print(str(v))
