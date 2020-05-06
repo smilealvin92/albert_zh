@@ -1,3 +1,5 @@
+# 词向量获取
+在原作者开源的基础上，增加一个extract_feature.py文件，从倒数第二层提取每一个token的向量，然后对每个词的所有的token的向量取平均，得到该词的词向量，但是结果并不太如人意。
 # albert_zh
 
 An Implementation of <a href="https://arxiv.org/pdf/1909.11942.pdf">A Lite Bert For Self-Supervised Learning Language Representations</a> with TensorFlow
